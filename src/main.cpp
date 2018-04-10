@@ -1,4 +1,4 @@
-#include "oop.hpp"
+#include "Game.hpp"
 #include <iostream>
 #include <math.h>
 #include <sstream>
@@ -10,6 +10,5 @@ void handleEvent(SDL_Event * e);
 
 int main( int argc, char* args[] )
 {
-    start();
-    return 0;
+    Game game;
 }

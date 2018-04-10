@@ -2,11 +2,11 @@
 #define POSITION_HPP
 
 class Position {   
-private:
-    int x, y;
 public:
+    int x, y;
     Position();
     Position(const int&, const int&);
+    double distanceFrom(const Position &);
 };
 
 #endif

@@ -21,13 +21,13 @@ public:
     ~LinkedList();
 
     // Method
-    T& get(int);
-    void remove(const T&);
-    void add(const T&);
+    T* get(int);
+    void remove(T*);
+    void add(T*);
     int length();
     bool isEmpty();
-    int find(const T&);
-    T& operator[](const int&);
+    int find(T*);
+    T* operator[](const int&);
 };
 
 template <class T>
@@ -51,36 +51,39 @@ LinkedList<T>::~LinkedList() {
 }
 
 template <class T>
-T & LinkedList<T>::get(int index) {
+T * LinkedList<T>::get(int index) {
+    printf("Gangerti\n");
     node<T> * curr = head;
     int pos = 0;
     while (curr != NULL) {
-        if (pos == index) return *(curr->value);
+        if (pos == index) return curr->value;
+        printf("Gangerti\n");
         curr = curr->next;
+        pos++;
     }
-    throw out_of_range();
+    throw out_of_range("Out of range");
 }
 
 template <class T>
-void LinkedList<T>::remove(const T & value) {
+void LinkedList<T>::remove(T * value) {
     node<T> * curr = head;
-    if (*(curr->value) == value) {
+    if (curr->value == value) {
         delete head;
         head = NULL;
         tail = NULL;
     }
     while (curr->next != NULL && curr->next->value != value)
         curr = curr->next;
-    if (curr->next == NULL) throw out_of_range();
+    if (curr->next == NULL) throw out_of_range("No object found");
     curr->next = curr->next->next;
 }
 
 template <class T>
-void LinkedList<T>::add(const T & value) {
+void LinkedList<T>::add(T * value) {
     node<T> * temp = new node<T>;
-    *(temp->value) = value;
+    temp->value = value;
     temp->next = NULL;
-    if (head != NULL) {
+    if (head == NULL) {
         head = temp;
         tail = temp;
         temp = NULL;
@@ -101,17 +104,18 @@ int LinkedList<T>::length() {
     int length = 0;
     node <T> * curr = head;
     while (curr != NULL) {
+        curr = curr->next;
         length++;
     }
     return length;
 }
 
 template <class T>
-int LinkedList<T>::find(const T & value) {
+int LinkedList<T>::find(T * value) {
     node<T> * curr = head;
     int pos = 0;
     while (curr != NULL) {
-        if (*(curr->value) == value) 
+        if (curr->value == value) 
             return pos;
         curr = curr->next;
         pos++;
@@ -119,7 +123,7 @@ int LinkedList<T>::find(const T & value) {
 }
 
 template <class T>
-T& LinkedList<T>::operator[](const int& i) {
+T * LinkedList<T>::operator[](const int& i) {
     return(get(i));
 }
 

@@ -5,15 +5,14 @@
 
 Game::Game() {
     time_start = chrono::high_resolution_clock::now();
-
+    printf("Game started\n");
     start();
-
-
+    update();
 }
 
 void Game::start() {
     if (!init()) {
-        printf("Exited manually due to error");
+        printf("Exited manually due to error\n");
     }
 
     framesPassed = 0;
@@ -29,6 +28,7 @@ void Game::start() {
 }
 
 void Game::update() {
+    printf("Game success running\n");
     while (running) {
         updateGameTime();
 
@@ -36,18 +36,64 @@ void Game::update() {
 
         if (quit) {
             running = false;
+            printf("Exit\n");
         }
-
         clearScreen();
-
+        drawObjects();
         updateScreen();
     }
 }
 
+SDL_Surface* Game::loadSurface( std::string path )
+{
+    SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+    if( loadedSurface == NULL )
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+    }
+
+    return loadedSurface;
+}
+
+void Game::drawImage(const std::string &filename, int x, int y) {
+    if (loadedSurfaces.count(filename) < 1) {
+        loadedSurfaces[filename] = loadSurface(filename);
+    }
+
+    SDL_Surface* s = loadedSurfaces[filename];
+
+    SDL_Rect dest;
+    dest.x = x - s->w/2;
+    dest.y = y - s->h/2;
+    dest.w = s->w;
+    dest.h = s->h;
+    SDL_BlitSurface(s, NULL, gScreenSurface, &dest);
+}
+
+void Game::drawText(std::string text, int font_size, int x, int y, unsigned char r, unsigned char g, unsigned char b) {
+    if (loadedFontSizes.count(font_size) < 1) {
+        loadedFontSizes[font_size] = TTF_OpenFont(FONT_NAME, font_size);
+    }
+
+    TTF_Font* font = loadedFontSizes[font_size];
+    SDL_Surface* result = TTF_RenderText_Blended(font, text.c_str(), {r, g, b});
+    SDL_Rect dest;
+    dest.x = x;
+    dest.y = y;
+    dest.w = result->w;
+    dest.h = result->h;
+    SDL_BlitSurface(result, NULL, gScreenSurface, &dest);
+    SDL_FreeSurface(result);
+}
+
 void Game::drawObjects() {
+    printf("%d\n", aquarium.objects.length());
     for (int i = 0; i < aquarium.objects.length(); i++) {
-        AquariumObject object = aquarium.objects[i];
-        Position pos = object.getPosition();
+        AquariumObject * object = aquarium.objects[i];
+        printf("Gangerti Anjeng\n");
+        Position pos = object->getPosition();
+        printf("Jantuk\n");
+        drawImage(object->sprite, pos.x, pos.y);
     }
 }
 
@@ -67,7 +113,13 @@ void Game::handleInput() {
         }
         else if (e.type == SDL_MOUSEBUTTONDOWN) {
             if (e.button.button == SDL_BUTTON_LEFT) {
-
+                printf("Check linked list\n");
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                Guppy * guppy = new Guppy(x, y, aquarium);
+                aquarium.objects.add(guppy);
+                aquarium.fishes.add(guppy);
+                printf("Fish added\n");
             }
         }
     }

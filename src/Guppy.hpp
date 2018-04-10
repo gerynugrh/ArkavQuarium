@@ -11,6 +11,7 @@
 class Guppy : public AquariumObject, public Fish {
 private:   
     static int foodForUpgrade, timeForCoin, speed;
+    int amountOfFood;
 protected:
     bool eat();
     Coin& produceCoin();
@@ -18,7 +19,7 @@ protected:
     void findNearestFood();
     void move();
 public:
-    Guppy(const int&, const int&, const Aquarium&);
+    Guppy(const int&, const int&, Aquarium&);
     void update();
     int getStage() const;
     Position getPosition() const;
