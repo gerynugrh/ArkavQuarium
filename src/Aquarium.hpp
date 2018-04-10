@@ -6,15 +6,10 @@
 #include "Snail.hpp"
 #include "Coin.hpp"
 #include "Food.hpp"
+#include "AquariumObject.hpp"
 
 class Aquarium {
 private:
-    int height, width;
-    LinkedList<Fish> fishes;
-    LinkedList<Snail> snails; 
-    LinkedList<Food> foods;
-    LinkedList<Coin> coins;
-
     void addFish(const Fish&);
     void addSnail(const Snail&);
     void addFood(const Food&);
@@ -31,6 +26,12 @@ private:
     int getAmountOfCoin() const;
     
 public:
+    int height, width;
+    LinkedList<Fish> fishes;
+    LinkedList<Snail> snails; 
+    LinkedList<Food> foods;
+    LinkedList<Coin> coins;
+    LinkedList<AquariumObject> objects;
     Aquarium();
     Aquarium(const int&, const int&);
 };

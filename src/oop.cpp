@@ -1,19 +1,20 @@
 // Anda tidak perlu melakukan perubahan pada file ini untuk memenuhi spek
 // wajib. Namun, hal tersebut diperbolehkan.
 #include "oop.hpp"
-
+#include <vector>
 #include <map>
 #include <iostream>
+#include <sstream>
 #include <chrono>
 
 using namespace std::chrono;
 
-high_resolution_clock::time_point start = high_resolution_clock::now();
+high_resolution_clock::time_point time_start = high_resolution_clock::now();
 
 double time_since_start()
 {
     high_resolution_clock::time_point now = high_resolution_clock::now();
-        return duration_cast<duration<double>>(now - start).count();
+        return duration_cast<duration<double>>(now - time_start).count();
 }
 
 SDL_Window* sdlWindow;
@@ -124,6 +125,8 @@ bool quit = false;
 std::set<SDL_Keycode> pressedKeys;
 std::set<SDL_Keycode> tappedKeys;
 
+int cx, cy;
+
 void handle_input() {
     SDL_Event e;
     if (!tappedKeys.empty()) tappedKeys.clear();
@@ -136,8 +139,98 @@ void handle_input() {
                 tappedKeys.insert(e.key.keysym.sym);
             } else if (e.type == SDL_KEYUP) {
                 pressedKeys.erase(e.key.keysym.sym);
+            } else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (e.button.button == SDL_BUTTON_LEFT) {
+                    SDL_GetMouseState(&cx, &cy);
+                }
             }
         }
+}
+
+
+void start() {
+
+    const double speed = 50; // pixels per second
+
+    init();
+    // Menghitung FPS
+    int frames_passed = 0;
+    double fpc_start = time_since_start();
+    std::string fps_text = "FPS: 0";
+
+    // Posisi ikan
+    cy = SCREEN_HEIGHT / 2;
+    cx = SCREEN_WIDTH / 2;
+
+    bool running = true;
+
+    double prevtime = time_since_start();
+
+    while (running) {
+        double now = time_since_start();
+        double sec_since_last = now - prevtime;
+        prevtime = now;
+
+        handle_input();
+        if (quit_pressed()) {
+            running = false;
+        }
+
+        // Gerakkan ikan selama tombol panah ditekan
+        // Kecepatan dikalikan dengan perbedaan waktu supaya kecepatan ikan
+        // konstan pada komputer yang berbeda.
+        for (auto key : get_pressed_keys()) {
+            switch (key) {
+            case SDLK_UP:
+                cy -= speed * sec_since_last;
+                break;
+            case SDLK_DOWN:
+                cy += speed * sec_since_last;
+                break;
+            case SDLK_LEFT:
+                cx -= speed * sec_since_last;
+                break;
+            case SDLK_RIGHT:
+                cx += speed * sec_since_last;
+                break;
+            }
+        }
+
+        // Proses masukan yang bersifat "tombol"
+        for (auto key : get_tapped_keys()) {
+            switch (key) {
+            // r untuk reset
+            case SDLK_r:
+                cy = SCREEN_HEIGHT / 2;
+                cx = SCREEN_WIDTH / 2;
+                break;
+            // x untuk keluar
+            case SDLK_x:
+                running = false;
+                break;
+            }
+        }
+
+        // Update FPS setiap detik
+        frames_passed++;
+        if (now - fpc_start > 1) {
+            std::ostringstream strs;
+            strs << "FPS: " ;
+            strs << frames_passed/(now - fpc_start);
+            fps_text = strs.str();;
+            fpc_start = now;
+            frames_passed = 0;
+        }
+
+        // Gambar ikan di posisi yang tepat.
+        clear_screen();
+        draw_text("Panah untuk bergerak, r untuk reset, x untuk keluar", 18, 10, 10, 0, 0, 0);
+        draw_text(fps_text, 18, 10, 30, 0, 0, 0);
+        draw_image("../res/ikan.png", cx, cy);
+        update_screen();
+    }
+
+    close();    
 }
 
 bool quit_pressed() {

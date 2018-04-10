@@ -24,6 +24,7 @@ public:
     T& get(int);
     void remove(const T&);
     void add(const T&);
+    int length();
     bool isEmpty();
     int find(const T&);
     T& operator[](const int&);
@@ -96,6 +97,16 @@ bool LinkedList<T>::isEmpty() {
 }
 
 template <class T>
+int LinkedList<T>::length() {
+    int length = 0;
+    node <T> * curr = head;
+    while (curr != NULL) {
+        length++;
+    }
+    return length;
+}
+
+template <class T>
 int LinkedList<T>::find(const T & value) {
     node<T> * curr = head;
     int pos = 0;
@@ -108,8 +119,8 @@ int LinkedList<T>::find(const T & value) {
 }
 
 template <class T>
-T& LinkedList<T>::operator[](const int&) {
-
+T& LinkedList<T>::operator[](const int& i) {
+    return(get(i));
 }
 
 #endif

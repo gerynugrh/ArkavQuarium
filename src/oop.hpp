@@ -6,13 +6,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <set>
 #include <string>
+#include <vector>
 
 // Pengaturan ukuran layar yang dihasilkan.
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 // Nama font yang digunakan untuk menggambar tulisan.
-const char* const FONT_NAME = "res/OpenSans-Regular.ttf";
+const char* const FONT_NAME = "../res/OpenSans-Regular.ttf";
 
 // ---------------------------------- SETUP ----------------------------------
 
@@ -67,5 +68,7 @@ const std::set<SDL_Keycode>& get_tapped_keys();
 
 // Mengembalikan waktu dari permulaan program dalam nilai detik (bisa pecahan).
 double time_since_start();
+
+void start();
 
 #endif

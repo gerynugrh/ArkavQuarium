@@ -5,7 +5,7 @@
 #include "AquariumObject.hpp"
 #include "Position.hpp"
 
-class NormalSnail : public AquariumObject {
+class NormalSnail : public AquariumObject, public Snail {
 private:
     static int speed;
 protected:
