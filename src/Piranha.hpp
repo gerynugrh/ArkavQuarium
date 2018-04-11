@@ -4,22 +4,27 @@
 #include "Aquarium.hpp"
 #include "AquariumObject.hpp"
 #include "Position.hpp"
+#include "Animation.hpp"
 #include "Fish.hpp"
 #include "Coin.hpp"
 
 class Piranha : public AquariumObject, public Fish {
 private:
-    static int speed;
 protected:
     void upgrade();
-    void findNearestFood();
-    void move();
-    Coin& produceCoin();
+    Fish * findNearestFood();
+    void move(double secSinceLast);
+    Coin * produceCoin();
     bool eat();
 public:
-    Piranha(const int&, const int&, const Aquarium&);
-    void update();
-    Position getPosition();
+    static int speed;
+    static std::vector<Animation> animList;
+    Piranha(const int&, const int&, Aquarium&, double now);
+    Position getPosition() const;
+    int getStage() const; 
+    int getSpeed();
+    void update(double now, double secSinceLast);
+    Animation getAnim(int index);
 };
 
 #endif

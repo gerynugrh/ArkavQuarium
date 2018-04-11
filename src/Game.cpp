@@ -3,6 +3,9 @@
 #include <iostream>
 #include <sstream>
 
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
+
 Game::Game() {
     time_start = chrono::high_resolution_clock::now();
     printf("Game started\n");
@@ -14,6 +17,86 @@ void Game::start() {
     if (!init()) {
         printf("Exited manually due to error\n");
     }
+
+    // Load small guppy animation
+    Animation animGuppySmallMove("../res/smallswim.gif", 80, 0);
+    Animation animGuppySmallEat("../res/smalleat.gif", 80, 0);
+    Animation animGuppySmallTurn("../res/smallturn.gif", 80, 0);
+    Animation animGuppySmallHungryMove("../res/hungryswim.gif", 80, 0);
+    Animation animGuppySmallHungryEat("../res/hungryeat.gif", 80, 0);
+    Animation animGuppySmallHungryTurn("../res/hungryturn.gif", 80, 0);
+    Guppy::animList.push_back(animGuppySmallMove);
+    Guppy::animList.push_back(animGuppySmallEat);
+    Guppy::animList.push_back(animGuppySmallTurn);
+    Guppy::animList.push_back(animGuppySmallHungryMove);
+    Guppy::animList.push_back(animGuppySmallHungryEat);
+    Guppy::animList.push_back(animGuppySmallHungryTurn);
+
+    Animation animGuppyMediumMove("../res/smallswim.gif", 80, 1);
+    Animation animGuppyMediumEat("../res/smalleat.gif", 80, 1);
+    Animation animGuppyMediumTurn("../res/smallturn.gif", 80, 1);
+    Animation animGuppyMediumHungryMove("../res/hungryswim.gif", 80, 1);
+    Animation animGuppyMediumHungryEat("../res/hungryeat.gif", 80, 1);
+    Animation animGuppyMediumHungryTurn("../res/hungryturn.gif", 80, 1);
+    Guppy::animList.push_back(animGuppyMediumMove);
+    Guppy::animList.push_back(animGuppyMediumEat);
+    Guppy::animList.push_back(animGuppyMediumTurn);
+    Guppy::animList.push_back(animGuppyMediumHungryMove);
+    Guppy::animList.push_back(animGuppyMediumHungryEat);
+    Guppy::animList.push_back(animGuppyMediumHungryTurn);
+
+    Animation animGuppyLargeMove("../res/smallswim.gif", 80, 2);
+    Animation animGuppyLargeEat("../res/smalleat.gif", 80, 2);
+    Animation animGuppyLargeTurn("../res/smallturn.gif", 80, 2);
+    Animation animGuppyLargeHungryMove("../res/hungryswim.gif", 80, 2);
+    Animation animGuppyLargeHungryEat("../res/hungryeat.gif", 80, 2);
+    Animation animGuppyLargeHungryTurn("../res/hungryturn.gif", 80, 2);
+    Guppy::animList.push_back(animGuppyLargeMove);
+    Guppy::animList.push_back(animGuppyLargeEat);
+    Guppy::animList.push_back(animGuppyLargeTurn);
+    Guppy::animList.push_back(animGuppyLargeHungryMove);
+    Guppy::animList.push_back(animGuppyLargeHungryEat);
+    Guppy::animList.push_back(animGuppyLargeHungryTurn);    
+
+    Animation animGuppyKingMove("../res/smallswim.gif", 80, 3);
+    Animation animGuppyKingEat("../res/smalleat.gif", 80, 3);
+    Animation animGuppyKingTurn("../res/smallturn.gif", 80, 3);
+    Animation animGuppyKingHungryMove("../res/hungryswim.gif", 80, 3);
+    Animation animGuppyKingHungryEat("../res/hungryeat.gif", 80, 3);
+    Animation animGuppyKingHungryTurn("../res/hungryturn.gif", 80, 3);
+    Guppy::animList.push_back(animGuppyKingMove);
+    Guppy::animList.push_back(animGuppyKingEat);
+    Guppy::animList.push_back(animGuppyKingTurn);
+    Guppy::animList.push_back(animGuppyKingHungryMove);
+    Guppy::animList.push_back(animGuppyKingHungryEat);
+    Guppy::animList.push_back(animGuppyKingHungryTurn);   
+
+    Animation animPiranhaMove("../res/smallswim.gif", 80, 4);
+    Animation animPiranhaEat("../res/smalleat.gif", 80, 4);
+    Animation animPiranhaTurn("../res/smallturn.gif", 80, 4);
+    Animation animPiranhaHungryMove("../res/hungryswim.gif", 80, 4);
+    Animation animPiranhaHungryEat("../res/hungryeat.gif", 80, 4);
+    Animation animPiranhaHungryTurn("../res/hungryturn.gif", 80, 4);
+    Piranha::animList.push_back(animPiranhaMove);
+    Piranha::animList.push_back(animPiranhaEat);
+    Piranha::animList.push_back(animPiranhaTurn);
+    Piranha::animList.push_back(animPiranhaHungryMove);
+    Piranha::animList.push_back(animPiranhaHungryEat);
+    Piranha::animList.push_back(animPiranhaHungryTurn);
+
+    Animation animSnailMove("../res/stinky.gif", 80, 0);
+    Animation animSnailIdle("../res/stinky.gif", 80, 2);
+    Animation animSnailTurn("../res/stinky.gif", 80, 1);
+    NormalSnail::animList.push_back(animSnailMove);
+    NormalSnail::animList.push_back(animSnailIdle);
+    NormalSnail::animList.push_back(animSnailTurn);
+
+    Guppy::foodForUpgrade = 5;
+    Guppy::speed = 50;
+    Piranha::speed = 60;
+
+    Fish::timeUntilHungry = 5;
+    Fish::timeUntilDead = 10;
 
     framesPassed = 0;
     fpcStart = timeSinceStart();
@@ -39,9 +122,21 @@ void Game::update() {
             printf("Exit\n");
         }
         clearScreen();
+        updateObjects();
         drawObjects();
         updateScreen();
     }
+}
+
+void Game::updateObjects() {
+    for (int i = 0; i < aquarium.fishes.length(); i++) {
+        Fish * fish = aquarium.fishes[i];
+        fish->update(now, secSinceLast);
+    }
+    for (int i = 0; i < aquarium.snails.length(); i++) {
+        Snail * snail = aquarium.snails[i];
+        snail->update(now, secSinceLast);
+    }        
 }
 
 SDL_Surface* Game::loadSurface( std::string path )
@@ -88,13 +183,33 @@ void Game::drawText(std::string text, int font_size, int x, int y, unsigned char
 
 void Game::drawObjects() {
     printf("%d\n", aquarium.objects.length());
-    for (int i = 0; i < aquarium.objects.length(); i++) {
-        AquariumObject * object = aquarium.objects[i];
-        printf("Gangerti Anjeng\n");
-        Position pos = object->getPosition();
-        printf("Jantuk\n");
-        drawImage(object->sprite, pos.x, pos.y);
+    for (int i = 0; i < aquarium.fishes.length(); i++) {
+        Fish * fish = aquarium.fishes[i];
+        Position pos = fish->getPosition();
+        Animation anim = fish->getAnim(fish->animMode);
+        drawFrame(anim.getSprite(), pos.x, pos.y, anim.get(fish->animFrame));
     }
+    for (int i = 0; i < aquarium.snails.length(); i++) {
+        Snail * snail = aquarium.snails[i];
+        Position pos = snail->getPosition();
+        Animation anim = snail->getAnim(snail->animMode);
+        drawFrame(anim.getSprite(), pos.x, pos.y, anim.get(snail->animFrame));
+    } 
+}
+
+void Game::drawFrame(const std::string &filename, int x, int y, SDL_Rect* frame) {
+    if (loadedSurfaces.count(filename) < 1) {
+        loadedSurfaces[filename] = loadSurface(filename);
+    }
+
+    SDL_Surface* s = loadedSurfaces[filename];
+
+    SDL_Rect dest;
+    dest.x = x - frame->w/2;
+    dest.y = y - frame->h/2;
+    dest.w = s->w;
+    dest.h = s->h;
+    SDL_BlitSurface(s, frame, gScreenSurface, &dest);
 }
 
 void Game::handleInput() {
@@ -107,6 +222,19 @@ void Game::handleInput() {
         else if (e.type == SDL_KEYDOWN && !e.key.repeat) {
             pressedKeys.insert(e.key.keysym.sym);
             tappedKeys.insert(e.key.keysym.sym);
+            if (e.key.keysym.sym == SDLK_m) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                NormalSnail * snail = new NormalSnail(x, SCREEN_HEIGHT - 40, 0, aquarium, now);
+                aquarium.snails.add(snail);
+            } 
+            else if (e.key.keysym.sym == SDLK_k) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                Piranha * piranha = new Piranha(x, y, aquarium, now);
+                aquarium.fishes.add(piranha);     
+                printf("Piranha spawned\n");           
+            }
         }
         else if (e.type == SDL_KEYUP) {
             pressedKeys.erase(e.key.keysym.sym);
@@ -116,8 +244,7 @@ void Game::handleInput() {
                 printf("Check linked list\n");
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                Guppy * guppy = new Guppy(x, y, aquarium);
-                aquarium.objects.add(guppy);
+                Guppy * guppy = new Guppy(x, y, aquarium, now);
                 aquarium.fishes.add(guppy);
                 printf("Fish added\n");
             }

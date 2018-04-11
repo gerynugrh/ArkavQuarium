@@ -7,7 +7,8 @@ class Food {
 public:
     virtual void removeFood() = 0;
     virtual Position getPosition() = 0;
-    virtual void update() = 0;
+    virtual void update(double now, double secSinceLast) = 0;
+    virtual Animation getAnim(int index) = 0;
 };
 
 #endif

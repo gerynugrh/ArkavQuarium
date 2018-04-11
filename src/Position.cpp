@@ -13,4 +13,6 @@ Position::Position(const int & x, const int & y) {
 
 double Position::distanceFrom(const Position & pos) {
     double distance = sqrt((x - pos.x) * (x - pos.x) + (y - pos.y) * (y - pos.y));
+
+    return distance;
 }

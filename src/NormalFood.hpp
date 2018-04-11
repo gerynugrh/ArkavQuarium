@@ -11,10 +11,13 @@ private:
 protected:
     void move();
 public:
-    NormalFood(const int&, const int&, const Aquarium&);
+    static std::vector<Animation> animList;
+    
+    NormalFood(const int&, const int&, Aquarium&);
     void removeFood();
     Position getPosition();
     void update();
+    Animation getAnim(int index);
 };
 
 #endif

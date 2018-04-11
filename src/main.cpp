@@ -3,10 +3,11 @@
 #include <math.h>
 #include <sstream>
 #include <vector>
+#include <random>
 
 const double speed = 50; // pixels per second
 
-void handleEvent(SDL_Event * e);
+std::default_random_engine generator;
 
 int main( int argc, char* args[] )
 {

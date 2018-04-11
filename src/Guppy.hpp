@@ -7,22 +7,27 @@
 #include "LinkedList.hpp"
 #include "Fish.hpp"
 #include "Coin.hpp"
+#include <vector>
+#include "Animation.hpp"
 
 class Guppy : public AquariumObject, public Fish {
-private:   
-    static int foodForUpgrade, timeForCoin, speed;
+private:
     int amountOfFood;
 protected:
-    bool eat();
-    Coin& produceCoin();
+    bool eat(Food * food);
+    Coin* produceCoin();
     void upgrade();
-    void findNearestFood();
-    void move();
+    Food* findNearestFood();
+    void move(double secSinceLast);
 public:
-    Guppy(const int&, const int&, Aquarium&);
-    void update();
+    static int foodForUpgrade, timeForCoin, speed;
+    static std::vector<Animation> animList;
+    void update(double now, double secSinceLast);
+    Guppy(const int&, const int&, Aquarium&, double now);
     int getStage() const;
+    int getSpeed();
     Position getPosition() const;
+    Animation getAnim(int index);
 };
 
 #endif

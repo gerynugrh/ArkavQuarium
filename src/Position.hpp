@@ -3,7 +3,7 @@
 
 class Position {   
 public:
-    int x, y;
+    double x, y;
     Position();
     Position(const int&, const int&);
     double distanceFrom(const Position &);

@@ -10,10 +10,11 @@ private:
 protected:
     void move();
 public:
+    static std::vector<Animation> animList;
+
     SilverCoin(const int&, const int&, const Aquarium&);
     void getPosition();
     void removeCoin();
-    void update();
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include "Aquarium.hpp"
 #include "AquariumObject.hpp"
 #include "Position.hpp"
+#include <vector>
 
 class NormalSnail : public AquariumObject, public Snail {
 private:
@@ -13,9 +14,12 @@ protected:
     void move();
     bool takeCoin();
 public:
-    NormalSnail(const int & x, const int & type, const Aquarium & aquarium);
+    static std::vector<Animation> animList;
+
+    NormalSnail(const int & x, const int & y, const int & type, Aquarium & aquarium, double now);
     Position getPosition();
-    void update();
+    void update(double now, double secSinceLast);
+    Animation getAnim(int index);
 };
 
 #endif

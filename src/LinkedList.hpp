@@ -68,14 +68,17 @@ template <class T>
 void LinkedList<T>::remove(T * value) {
     node<T> * curr = head;
     if (curr->value == value) {
-        delete head;
-        head = NULL;
-        tail = NULL;
+        if (curr->next == NULL) tail = NULL;
+        head = curr->next;
+        return;
     }
     while (curr->next != NULL && curr->next->value != value)
         curr = curr->next;
     if (curr->next == NULL) throw out_of_range("No object found");
     curr->next = curr->next->next;
+    if (curr->next == NULL) {
+        tail = curr;
+    }
 }
 
 template <class T>

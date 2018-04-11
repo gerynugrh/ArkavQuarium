@@ -3,6 +3,8 @@
 
 #include "Aquarium.hpp"
 #include "Guppy.hpp"
+#include "NormalSnail.hpp"
+#include "Piranha.hpp"
 #include <chrono>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -11,8 +13,6 @@
 #include <map>
 
 // Pengaturan ukuran layar yang dihasilkan.
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
 
 class Game {
 private:
@@ -33,9 +33,11 @@ private:
     SDL_Surface * loadSurface(std::string path);
     void drawText(std::string text, int font_size, int x, int y, unsigned char r, unsigned char g, unsigned char b);
     void drawImage(const std::string &filename, int x, int y);
+    void drawFrame(const std::string &flinemae, int x, int y, SDL_Rect* frame);
     void drawObjects();
     void updateScreen();
     void clearScreen();
+    void updateObjects();
     void updateFPS();
     void updateGameTime();
     void handleInput();
