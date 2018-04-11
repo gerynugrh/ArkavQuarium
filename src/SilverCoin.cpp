@@ -3,9 +3,22 @@
 std::vector<Animation> SilverCoin::animList;
 int SilverCoin::speed;
 
-SilverCoin::SilverCoin(const int & x, const int & y, Aquarium & aquarium, double now) : AquariumObject(Position(x,y), aquarium) {
+SilverCoin::SilverCoin(const int & x, const int & y, Aquarium & aquarium, double now, int value) : AquariumObject(Position(x,y), aquarium) {
+    this->value = value;
+    if (value <= 100) {
+        type = 0;
+    }
+    else if (value <= 200) {
+        type = 1;
+    }
+    else if (value <= 400) {
+        type = 2;
+    }
+    else {
+        type = 3;
+    }
     animFrame = 0;
-    animMode = 0;
+    animMode = type;
     AquariumObject::timeSpawned = now;
     touchedGround = false;
 }
@@ -19,7 +32,7 @@ Position SilverCoin::getPosition() {
 } 
 
 void SilverCoin::removeCoin() {
-
+    aquarium.gold += value;
 }
 
 void SilverCoin::update(double now, double secSinceLast) {
@@ -35,7 +48,7 @@ void SilverCoin::update(double now, double secSinceLast) {
 
 void SilverCoin::move(double secSinceLast) {
     double newY = position.y + secSinceLast * speed;
-    if (newY <= SCREEN_HEIGHT - 40) {
+    if (newY <= SCREEN_HEIGHT - 15) {
         position.y = newY;
     }
     else {

@@ -26,7 +26,7 @@ private:
     int getAmountOfCoin() const;
     
 public:
-    int height, width;
+    int height, width, gold, numberOfEggs;
     LinkedList<Fish> fishes;
     LinkedList<Snail> snails; 
     LinkedList<Food> foods;

@@ -92,7 +92,7 @@ void NormalSnail::move(double secSinceLast) {
     else if (nearestCoin->getPosition().x > position.x && nearestCoin->getPosition().x - position.x >= 20){
         direction = 1;
     }
-    else if (abs(nearestCoin->getPosition().x - position.x) <= 20) {
+    else if (abs(nearestCoin->getPosition().x - position.x) <= 10) {
         animFrame = 0;
         direction = 0;
     }
@@ -115,6 +115,7 @@ Coin * NormalSnail::findNearestCoin() {
 bool NormalSnail::takeCoin() {
     Coin * coin = findNearestCoin();
     if (position.distanceFrom(coin->getPosition()) <= 20) {
+        coin->removeCoin();
         aquarium.coins.remove(coin);
         return true;
     }

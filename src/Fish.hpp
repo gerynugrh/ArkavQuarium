@@ -10,10 +10,9 @@ class Fish {
 protected:
     enum Type {GUPPY = 1, PIRANHA = 2};
     const int type;
-    bool alive, hungry;
+    bool alive, hungry, destroy;
     int stage;
 protected:
-    virtual void produceCoin(double now) = 0;
     virtual void move(double secSinceLast) = 0;
 public:
     int animMode, animFrame;
@@ -21,6 +20,7 @@ public:
     static int timeUntilHungry, timeUntilDead;
     Fish(const int &);
     int getType();
+    bool getDestroyed();
     virtual ~Fish();
     virtual Position getPosition() const = 0;
     virtual int getStage() const = 0;

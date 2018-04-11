@@ -11,10 +11,10 @@ private:
 protected:
     void move(double secSinceLast);
 public:
-    int animFrame, animMode;
+    int animFrame, animMode, type, value;
     static std::vector<Animation> animList;
     static int speed;
-    SilverCoin(const int&, const int&, Aquarium&,double now);
+    SilverCoin(const int&, const int&, Aquarium&,double now, int value);
     Position getPosition();
     void removeCoin();
     void update(double now, double secSinceLast);

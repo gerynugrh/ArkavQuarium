@@ -3,8 +3,8 @@
 #include <iostream>
 #include <sstream>
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 Game::Game() {
     time_start = chrono::high_resolution_clock::now();
@@ -179,24 +179,34 @@ void Game::start() {
     NormalSnail::animList.push_back(animSnailFlipIdle);
     NormalSnail::animList.push_back(animSnailFlipTurn);
 
-    Animation animFoodMove("../res/food.png", 40, 2);
+    Animation animFoodMove("../res/food.png", 40, 1);
     NormalFood::animList.push_back(animFoodMove);
 
     NormalFood::speed = 30;
 
     Animation animCoinMove("../res/money.png", 72, 0);
+    Animation animGoldCoinMove("../res/money.png", 72, 1);
+    Animation animStarCoinMove("../res/money.png", 72, 2);
+    Animation animDiamondCoinMove("../res/money.png", 72, 3);
     SilverCoin::animList.push_back(animCoinMove);
+    SilverCoin::animList.push_back(animGoldCoinMove);
+    SilverCoin::animList.push_back(animStarCoinMove);
+    SilverCoin::animList.push_back(animDiamondCoinMove);
 
-    Guppy::foodForUpgrade = 5;
+    Guppy::foodForUpgrade = 1;
     Guppy::timeForCoin = 5;
     Guppy::speed = 50;
+    Guppy::price = 200;
     Piranha::speed = 60;
+    Piranha::price = 500;
 
     Fish::timeUntilHungry = 5;
     Fish::timeUntilDead = 10;
 
     SilverCoin::speed = 30;
     NormalSnail::speed = 30;
+
+    NormalFood::price = 20;
 
     framesPassed = 0;
     fpcStart = timeSinceStart();
@@ -205,6 +215,9 @@ void Game::start() {
     cy = SCREEN_HEIGHT / 2;
     cx = SCREEN_WIDTH / 2;
     
+    NormalSnail * snail = new NormalSnail(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 20, 0, aquarium, now);
+    aquarium.snails.add(snail);
+
     running = true;
 
     prevTime = timeSinceStart();
@@ -217,12 +230,57 @@ void Game::update() {
 
         handleInput();
 
+        if (!playAgain && aquarium.numberOfEggs >= 3) {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            while(e.type != SDL_KEYDOWN && e.key.keysym.sym != SDLK_ESCAPE) {
+                SDL_PollEvent(&e);
+                drawImage("../res/background.jpg", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+                drawText("You Win!", 40, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 255, 255, 255);
+                drawText("Press escape to resume game", 16, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 40, 255, 255, 255);
+                drawText("Gold:" + std::to_string(aquarium.gold), 16, 10, 10, 255, 255, 255);
+                drawText("Eggs:" + std::to_string(aquarium.numberOfEggs), 16, 10, 34, 255, 255, 255);
+                drawObjects();
+                updateScreen();
+            }
+            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
+                printf("Resume\n");
+                playAgain = true;
+            }
+        }
+
+        if (aquarium.fishes.length() == 0 && aquarium.coins.length() == 0 && aquarium.gold < Guppy::price) {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            while(e.type != SDL_KEYDOWN && e.key.keysym.sym != SDLK_ESCAPE) {
+                SDL_PollEvent(&e);
+                drawImage("../res/background.jpg", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+                drawText("You Lose!", 40, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 255, 255, 255);
+                drawText("Press escape to quit game", 16, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 40, 255, 255, 255);
+                drawText("Gold:" + std::to_string(aquarium.gold), 16, 10, 10, 255, 255, 255);
+                drawText("Eggs:" + std::to_string(aquarium.numberOfEggs), 16, 10, 34, 255, 255, 255);
+                drawText("Control:", 10, 10, SCREEN_HEIGHT - 35, 255, 255, 255);
+                drawText("Piranha: x   Guppy: g   Food: left click", 10, 10, SCREEN_HEIGHT - 20, 255, 255, 255);
+                drawObjects();
+                updateScreen();
+            }
+            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) {
+                printf("Resume\n");
+                running = false;
+            }            
+        }
+
         if (quit) {
             running = false;
             printf("Exit\n");
         }
         clearScreen();
         updateObjects();
+        drawImage("../res/background.jpg", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+        drawText("Gold:" + std::to_string(aquarium.gold), 16, 10, 10, 255, 255, 255);
+        drawText("Eggs:" + std::to_string(aquarium.numberOfEggs), 16, 10, 34, 255, 255, 255);
+        drawText("Control:", 10, 10, SCREEN_HEIGHT - 35, 255, 255, 255);
+        drawText("Piranha: P   Guppy: G   Food: left click", 10, 10, SCREEN_HEIGHT - 20, 255, 255, 255);
         drawObjects();
         updateScreen();
     }
@@ -231,7 +289,10 @@ void Game::update() {
 void Game::updateObjects() {
     for (int i = 0; i < aquarium.fishes.length(); i++) {
         Fish * fish = aquarium.fishes[i];
-        fish->update(now, secSinceLast);
+        if (!fish->getDestroyed())
+            fish->update(now, secSinceLast);
+        else 
+            aquarium.fishes.remove(fish);
     }
     for (int i = 0; i < aquarium.snails.length(); i++) {
         Snail * snail = aquarium.snails[i];
@@ -243,7 +304,11 @@ void Game::updateObjects() {
     }
     for (int i = 0; i < aquarium.foods.length(); i++) {
         Food * food = aquarium.foods[i];
-        food->update(now, secSinceLast);
+        if (!food->getDestroyed()) {
+            food->update(now, secSinceLast);
+        }
+        else
+            aquarium.foods.remove(food);
     }
 }
 
@@ -341,37 +406,34 @@ void Game::handleInput() {
         else if (e.type == SDL_KEYDOWN && !e.key.repeat) {
             pressedKeys.insert(e.key.keysym.sym);
             tappedKeys.insert(e.key.keysym.sym);
-            if (e.key.keysym.sym == SDLK_m) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                NormalSnail * snail = new NormalSnail(x, SCREEN_HEIGHT - 40, 0, aquarium, now);
-                aquarium.snails.add(snail);
-            } 
-            else if (e.key.keysym.sym == SDLK_k) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                Piranha * piranha = new Piranha(x, y, aquarium, now);
-                aquarium.fishes.add(piranha);     
-                printf("Piranha spawned\n");           
-            }
-            else if (e.key.keysym.sym == SDLK_c) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                SilverCoin * coin = new SilverCoin(x, y, aquarium, now);
-                aquarium.coins.add(coin);
+            if (e.key.keysym.sym == SDLK_k) {
+                if (aquarium.gold >= Piranha::price) {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    Piranha * piranha = new Piranha(x, y, aquarium, now);
+                    aquarium.fishes.add(piranha);     
+                    printf("Piranha spawned\n");     
+                }      
             }
             else if (e.key.keysym.sym == SDLK_g) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                Guppy * guppy = new Guppy(x, y, aquarium, now);
-                aquarium.fishes.add(guppy);
+                if (aquarium.gold >= Guppy::price) {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    Guppy * guppy = new Guppy(x, y, aquarium, now);
+                    aquarium.fishes.add(guppy);
+                }       
+            }
+            else if (e.key.keysym.sym == SDLK_e) {
+                if (aquarium.gold >= EGG_COST) {
+                    aquarium.numberOfEggs++;
+                }
             }
         }
         else if (e.type == SDL_KEYUP) {
             pressedKeys.erase(e.key.keysym.sym);
         }
         else if (e.type == SDL_MOUSEBUTTONDOWN) {
-            if (e.button.button == SDL_BUTTON_LEFT) {
+            if (e.button.button == SDL_BUTTON_LEFT && aquarium.gold >= NormalFood::price) {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
                 NormalFood * food = new NormalFood(x, y, aquarium, now);

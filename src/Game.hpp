@@ -15,15 +15,16 @@
 #include <map>
 
 // Pengaturan ukuran layar yang dihasilkan.
-
 class Game {
 private:
-    const char* const FONT_NAME = "../res/OpenSans-Regular.ttf";
+    const char* const FONT_NAME = "../res/04B_19__.TTF";
     Aquarium aquarium;
     chrono::high_resolution_clock::time_point time_start;
     SDL_Window * sdlWindow;
     SDL_Surface * gScreenSurface = NULL;
     int framesPassed;
+    const int EGG_COST = 100;
+    int playAgain = false;
     double fpcStart, cy, cx, prevTime, now, secSinceLast;
     std::string fpsText;
     bool running, quit = false;

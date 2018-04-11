@@ -7,6 +7,7 @@
 #include "Animation.hpp"
 #include "Fish.hpp"
 #include "Coin.hpp"
+#include "Guppy.hpp"
 #include "SilverCoin.hpp"
 
 class Piranha : public AquariumObject, public Fish {
@@ -16,10 +17,10 @@ protected:
     void upgrade();
     Fish * findNearestFood();
     void move(double secSinceLast);
-    void produceCoin(double now);
+    void produceCoin(double now, int value);
     bool eat(double now);
 public:
-    static int speed;
+    static int speed, price;
     static std::vector<Animation> animList;
     Piranha(const int&, const int&, Aquarium&, double now);
     Position getPosition() const;

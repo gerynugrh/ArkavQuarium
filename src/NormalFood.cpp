@@ -1,11 +1,13 @@
 #include "NormalFood.hpp"
 
 std::vector<Animation> NormalFood::animList;
-int NormalFood::speed;
+int NormalFood::speed, NormalFood::price;
 
 NormalFood::NormalFood(const int & x, const int & y, Aquarium & aquarium, double now) : AquariumObject(Position(x, y), aquarium) {
     animFrame = 0;
     animMode = 0;
+    aquarium.gold -= price;
+    touchedGround = false;
     AquariumObject::timeSpawned = now;
 }
 
@@ -24,12 +26,16 @@ void NormalFood::update(double now, double secSinceLast) {
 
 void NormalFood::move(double secSinceLast) {
     double newY = position.y + secSinceLast * speed;
-    if (newY <= SCREEN_HEIGHT - 40) {
+    if (newY <= SCREEN_HEIGHT - 10) {
         position.y = newY;
     }
     else {
         touchedGround = true;
     }
+}
+
+bool NormalFood::getDestroyed() {
+    return touchedGround;
 }
 
 Animation NormalFood::getAnim(int index) {

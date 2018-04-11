@@ -2,12 +2,13 @@
 #include "Helper.hpp"
 
 std::vector<Animation> Piranha::animList;
-int Piranha::speed;
+int Piranha::speed, Piranha::price;
 
 Piranha::Piranha(const int& x, const int& y, Aquarium& aquarium, double now) : AquariumObject(Position(x, y), aquarium), Fish(Fish::Type::PIRANHA) {
     Fish::animFrame = 0;
     Fish::animMode = 0;
     Fish::timeStamp = now;
+    aquarium.gold -= Piranha::price;
     Fish::timeEat = now;
     AquariumObject::timeSpawned = now;    
 }
@@ -17,59 +18,72 @@ Position Piranha::getPosition() const {
 }
 
 void Piranha::update(double now, double secSinceLast) {
-    if (Fish::animMode % 3 == 1 && Fish::animFrame == 9) {
-        Fish::animMode = 0 + 3 * hungry + 6 * right; 
-        Fish::animFrame = 0;
-        Fish::timeStamp = now;
-    }
-    else if (right && (Fish::animMode % 6) % 3 == 2 && Fish::animFrame == 9) {
-        Fish::animMode = 0 + 3 * hungry + 6 * right;
-        Fish::animFrame = 0;
-        Fish::timeStamp = now;
-    }
-    else if (!right && (Fish::animMode % 6) % 3 == 2) {
-        Fish::animFrame = 9 - (fmod((now - Fish::timeStamp) * 50, 60)) / 6; 
-
-        if (Fish::animFrame == 0) {
+    if (alive) {
+        if (Fish::animMode % 3 == 1 && Fish::animFrame == 9) {
+            Fish::animMode = 0 + 3 * hungry + 6 * right; 
+            Fish::animFrame = 0;
+            Fish::timeStamp = now;
+        }
+        else if (right && (Fish::animMode % 6) % 3 == 2 && Fish::animFrame == 9) {
             Fish::animMode = 0 + 3 * hungry + 6 * right;
             Fish::animFrame = 0;
-            Fish::timeStamp = now;            
+            Fish::timeStamp = now;
+        }
+        else if (!right && (Fish::animMode % 6) % 3 == 2) {
+            Fish::animFrame = 9 - (fmod((now - Fish::timeStamp) * 50, 60)) / 6; 
+
+            if (Fish::animFrame == 0) {
+                Fish::animMode = 0 + 3 * hungry + 6 * right;
+                Fish::animFrame = 0;
+                Fish::timeStamp = now;            
+            }
+        }
+        else {
+            printf("Frame: %d\n", Fish::animFrame);
+            Fish::animFrame = (fmod((now - Fish::timeStamp) * 50, 60)) / 6;
+        }
+        move(secSinceLast);
+        if (eat(now)) {
+            Fish::timeEat = now;
+            Fish::hungry = false;
+            Fish::animMode = animMode % 3 + 3 * hungry + 6 * right;
+        }
+        if (hungry && now - timeHungry >= timeUntilDead) {
+            Fish::alive = false;
+            Fish::animMode = 12 + right;
+            Fish::animFrame = 0;
+            Fish::timeStamp = now;
+        }
+        else if (!hungry && now - timeEat >= timeUntilHungry) {
+            Fish::timeHungry = now;
+            Fish::hungry = true;
+            Fish::animMode = animMode % 3 + 3 * hungry + 6 * right;
+        }
+        if (!right && (direction <= 90 || direction >= 270)) {
+            Fish::animMode = 2 + 3 * hungry + 6 * right;
+            if (right) {
+                Fish::animFrame = 9;
+            }
+            Fish::timeStamp = now;
+            right = true;
+        }
+        else if (right && (direction >= 90 && direction <= 270)) {
+            Fish::animMode = 2 + 3 * hungry + 6 * right;
+            if (right) {
+                Fish::animFrame = 9;
+            }
+            Fish::timeStamp = now;
+            right = false;
         }
     }
     else {
-        printf("Frame: %d\n", Fish::animFrame);
-        Fish::animFrame = (fmod((now - Fish::timeStamp) * 50, 60)) / 6;
-    }
-    move(secSinceLast);
-    if (eat(now)) {
-        Fish::timeEat = now;
-        Fish::hungry = false;
-        Fish::animMode = animMode % 3 + 3 * hungry + 6 * right;
-        produceCoin(now);
-    }
-    if (hungry && now - timeHungry >= timeUntilDead) {
-        Fish::alive = false;
-    }
-    else if (!hungry && now - timeEat >= timeUntilHungry) {
-        Fish::timeHungry = now;
-        Fish::hungry = true;
-        Fish::animMode = animMode % 3 + 3 * hungry + 6 * right;
-    }
-    if (!right && (direction <= 90 || direction >= 270)) {
-        Fish::animMode = 2 + 3 * hungry + 6 * right;
-        if (right) {
-            Fish::animFrame = 9;
+        if (Fish::animFrame == 9) {
+            Fish::destroy = true;
         }
-        Fish::timeStamp = now;
-        right = true;
-    }
-    else if (right && (direction >= 90 && direction <= 270)) {
-        Fish::animMode = 2 + 3 * hungry + 6 * right;
-        if (right) {
-            Fish::animFrame = 9;
+        else {
+            position.y += secSinceLast * 30;
+            Fish::animFrame = (fmod((now - Fish::timeStamp) * 50, 60)) / 6;        
         }
-        Fish::timeStamp = now;
-        right = false;
     }
 }
 
@@ -148,8 +162,8 @@ int Piranha::getSpeed() {
     return Piranha::speed;
 }
 
-void Piranha::produceCoin(double now) {
-    SilverCoin * coin = new SilverCoin(position.x, position.y, aquarium, now);
+void Piranha::produceCoin(double now, int value) {
+    SilverCoin * coin = new SilverCoin(position.x, position.y, aquarium, now, value);
     aquarium.coins.add(coin);
 }
 
@@ -157,6 +171,7 @@ bool Piranha::eat(double now) {
     Fish * food = findNearestFood();
     if (hungry && food != NULL && position.distanceFrom(food->getPosition()) <= 20) {
         printf("Closing in to eat\n");
+        produceCoin(now, Guppy::price * (food->getStage() + 1));
         aquarium.fishes.remove(food);
         return true;
     } else if (hungry && food != NULL && position.distanceFrom(food->getPosition()) <= 60) {

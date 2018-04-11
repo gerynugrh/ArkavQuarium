@@ -22,7 +22,9 @@ protected:
     Food* findNearestFood();
     void move(double secSinceLast);
 public:
-    static int foodForUpgrade, timeForCoin, speed;
+    static int foodForUpgrade, timeForCoin, speed, price;
+    double timeSinceLastCoin;
+    int getStage();
     static std::vector<Animation> animList;
     void update(double now, double secSinceLast);
     Guppy(const int&, const int&, Aquarium&, double now);

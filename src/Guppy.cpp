@@ -1,22 +1,25 @@
 #include "Guppy.hpp"
 #include <cmath>
 
-int Guppy::foodForUpgrade, Guppy::timeForCoin, Guppy::speed;
+int Guppy::foodForUpgrade, Guppy::timeForCoin, Guppy::speed, Guppy::price;
 std::vector<Animation> Guppy::animList;
 
 Guppy::Guppy(const int & x, const int & y, Aquarium & aquarium, double now) : AquariumObject(Position(x, y), aquarium), Fish(Fish::Type::GUPPY) {
     amountOfFood = 0;
     Fish::animFrame = 0;
     Fish::animMode = 0;
+    aquarium.gold -= Guppy::price;
     stage = 0;
     Fish::timeStamp = now;
+    timeSinceLastCoin = now;
+    Fish::timeEat = now;
     AquariumObject::timeSpawned = now;
     hungry = false;
     right = false;
 }
 
 int Guppy::getStage() const {
-    return stage;
+    return Fish::stage;
 }
 
 Position Guppy::getPosition() const {
@@ -59,18 +62,20 @@ void Guppy::update(double now, double secSinceLast) {
             }
         }
         else {
-            printf("Frame: %d\n", Fish::animFrame);
             Fish::animFrame = (fmod((now - Fish::timeStamp) * 50, 60)) / 6;
         }
         move(secSinceLast);
         if (eat(now)) {
             Fish::timeEat = now;
+            Fish::timeHungry = Fish::timeEat + timeUntilHungry;
             Fish::hungry = false;
             Fish::animMode = animMode % 3 + 3 * hungry + 6 * right + 12 * stage;
-            produceCoin(now);
         }
         if (hungry && now - timeHungry >= timeUntilDead) {
             Fish::alive = false;
+            Fish::animMode = 48 + 2 * stage + right;
+            Fish::animFrame = 0;
+            Fish::timeStamp = now;
         }
         else if (!hungry && now - timeEat >= timeUntilHungry) {
             Fish::timeHungry = now;
@@ -93,19 +98,34 @@ void Guppy::update(double now, double secSinceLast) {
             Fish::timeStamp = now;
             right = false;
         }
+        if (now - timeSinceLastCoin >= timeForCoin) {
+            produceCoin(now);
+            timeSinceLastCoin = now;
+        }
         upgrade();
+    } 
+    else {
+        if (Fish::animFrame == 9) {
+            Fish::destroy = true;
+        }
+        else {
+            position.y += secSinceLast * 30;
+            Fish::animFrame = (fmod((now - Fish::timeStamp) * 50, 60)) / 6;        
+        }
     }
+}
+
+int Guppy::getStage() {
+    return stage;
 }
 
 void Guppy::produceCoin(double now) {
-    if (((int) now -  (int) timeSpawned) % Guppy::timeForCoin == 4) {
-        SilverCoin * coin = new SilverCoin(position.x, position.y, aquarium, now);
-        aquarium.coins.add(coin);        
-    }
+    SilverCoin * coin = new SilverCoin(position.x, position.y, aquarium, now, 40 * (stage + 1));
+    aquarium.coins.add(coin);        
 }
 
 void Guppy::upgrade() {
-    if (amountOfFood >= Guppy::foodForUpgrade) {
+    if (amountOfFood >= Guppy::foodForUpgrade && stage < 3) {
         amountOfFood = 0;
         stage++;
     }
