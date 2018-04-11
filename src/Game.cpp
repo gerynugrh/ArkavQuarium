@@ -280,7 +280,7 @@ void Game::update() {
         drawText("Gold:" + std::to_string(aquarium.gold), 16, 10, 10, 255, 255, 255);
         drawText("Eggs:" + std::to_string(aquarium.numberOfEggs), 16, 10, 34, 255, 255, 255);
         drawText("Control:", 10, 10, SCREEN_HEIGHT - 35, 255, 255, 255);
-        drawText("Piranha: P   Guppy: G   Food: left click", 10, 10, SCREEN_HEIGHT - 20, 255, 255, 255);
+        drawText("Piranha: P   Guppy: G   Egg: E", 10, 10, SCREEN_HEIGHT - 20, 255, 255, 255);
         drawObjects();
         updateScreen();
     }
@@ -406,7 +406,7 @@ void Game::handleInput() {
         else if (e.type == SDL_KEYDOWN && !e.key.repeat) {
             pressedKeys.insert(e.key.keysym.sym);
             tappedKeys.insert(e.key.keysym.sym);
-            if (e.key.keysym.sym == SDLK_k) {
+            if (e.key.keysym.sym == SDLK_p) {
                 if (aquarium.gold >= Piranha::price) {
                     int x, y;
                     SDL_GetMouseState(&x, &y);
