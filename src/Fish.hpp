@@ -13,11 +13,11 @@ protected:
     bool alive, hungry;
     int stage;
 protected:
-    virtual Coin * produceCoin() = 0;
+    virtual void produceCoin(double now) = 0;
     virtual void move(double secSinceLast) = 0;
 public:
     int animMode, animFrame;
-    int timeHungry, timeEat;
+    int timeHungry, timeEat, timeStamp;
     static int timeUntilHungry, timeUntilDead;
     Fish(const int &);
     int getType();

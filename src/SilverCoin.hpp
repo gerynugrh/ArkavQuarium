@@ -3,18 +3,24 @@
 
 #include "AquariumObject.hpp"
 #include "Aquarium.hpp"
+#include "Animation.hpp"
 
-class SilverCoin : public AquariumObject{
+class SilverCoin : public AquariumObject, public Coin{
 private:
-    static int speed;
+    bool touchedGround;
 protected:
-    void move();
+    void move(double secSinceLast);
 public:
+    int animFrame, animMode;
     static std::vector<Animation> animList;
-
-    SilverCoin(const int&, const int&, const Aquarium&);
-    void getPosition();
+    static int speed;
+    SilverCoin(const int&, const int&, Aquarium&,double now);
+    Position getPosition();
     void removeCoin();
+    void update(double now, double secSinceLast);
+    Animation getAnim(int index);
+    int getAnimFrame();
+    int getAnimMode();
 };
 
 #endif

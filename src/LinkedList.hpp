@@ -52,12 +52,10 @@ LinkedList<T>::~LinkedList() {
 
 template <class T>
 T * LinkedList<T>::get(int index) {
-    printf("Gangerti\n");
     node<T> * curr = head;
     int pos = 0;
     while (curr != NULL) {
         if (pos == index) return curr->value;
-        printf("Gangerti\n");
         curr = curr->next;
         pos++;
     }

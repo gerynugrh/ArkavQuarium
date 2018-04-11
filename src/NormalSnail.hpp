@@ -8,18 +8,22 @@
 
 class NormalSnail : public AquariumObject, public Snail {
 private:
-    static int speed;
+    int direction;
+    bool idle, right;
 protected:
-    void getNearestCoin();
-    void move();
+    void move(double secSinceLast);
     bool takeCoin();
+    Coin * findNearestCoin();
 public:
+    static int speed;
     static std::vector<Animation> animList;
-
+    int animMode, animFrame;
     NormalSnail(const int & x, const int & y, const int & type, Aquarium & aquarium, double now);
     Position getPosition();
     void update(double now, double secSinceLast);
     Animation getAnim(int index);
+    int getAnimFrame();
+    int getAnimMode();
 };
 
 #endif

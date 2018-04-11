@@ -7,17 +7,20 @@
 
 class NormalFood : public AquariumObject, public Food {
 private:
-    static int speed;
+    bool touchedGround;
 protected:
-    void move();
+    void move(double secSinceLast);
 public:
+    static int speed;
     static std::vector<Animation> animList;
-    
-    NormalFood(const int&, const int&, Aquarium&);
+    int animFrame, animMode;
+    NormalFood(const int&, const int&, Aquarium&, double now);
     void removeFood();
     Position getPosition();
-    void update();
+    void update(double now, double secSinceLast);
     Animation getAnim(int index);
+    int getAnimFrame();
+    int getAnimMode();
 };
 
 #endif

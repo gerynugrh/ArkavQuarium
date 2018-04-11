@@ -19,84 +19,184 @@ void Game::start() {
     }
 
     // Load small guppy animation
-    Animation animGuppySmallMove("../res/smallswim.gif", 80, 0);
-    Animation animGuppySmallEat("../res/smalleat.gif", 80, 0);
-    Animation animGuppySmallTurn("../res/smallturn.gif", 80, 0);
-    Animation animGuppySmallHungryMove("../res/hungryswim.gif", 80, 0);
-    Animation animGuppySmallHungryEat("../res/hungryeat.gif", 80, 0);
-    Animation animGuppySmallHungryTurn("../res/hungryturn.gif", 80, 0);
+    Animation animGuppySmallMove("../res/smallswim.png", 80, 0);
+    Animation animGuppySmallEat("../res/smalleat.png", 80, 0);
+    Animation animGuppySmallTurn("../res/smallturn.png", 80, 0);
+    Animation animGuppySmallHungryMove("../res/hungryswim.png", 80, 0);
+    Animation animGuppySmallHungryEat("../res/hungryeat.png", 80, 0);
+    Animation animGuppySmallHungryTurn("../res/hungryturn.png", 80, 0);
+    Animation animGuppyFlipSmallMove("../res/smallswimflip.png", 80, 0);
+    Animation animGuppyFlipSmallEat("../res/smalleatflip.png", 80, 0);
+    Animation animGuppyFlipSmallTurn("../res/smallturnflip.png", 80, 0);
+    Animation animGuppyFlipSmallHungryMove("../res/hungryswimflip.png", 80, 0);
+    Animation animGuppyFlipSmallHungryEat("../res/hungryeatflip.png", 80, 0);
+    Animation animGuppyFlipSmallHungryTurn("../res/hungryturnflip.png", 80, 0);
     Guppy::animList.push_back(animGuppySmallMove);
     Guppy::animList.push_back(animGuppySmallEat);
     Guppy::animList.push_back(animGuppySmallTurn);
     Guppy::animList.push_back(animGuppySmallHungryMove);
     Guppy::animList.push_back(animGuppySmallHungryEat);
     Guppy::animList.push_back(animGuppySmallHungryTurn);
+    Guppy::animList.push_back(animGuppyFlipSmallMove);
+    Guppy::animList.push_back(animGuppyFlipSmallEat);
+    Guppy::animList.push_back(animGuppyFlipSmallTurn);
+    Guppy::animList.push_back(animGuppyFlipSmallHungryMove);
+    Guppy::animList.push_back(animGuppyFlipSmallHungryEat);
+    Guppy::animList.push_back(animGuppyFlipSmallHungryTurn);
 
-    Animation animGuppyMediumMove("../res/smallswim.gif", 80, 1);
-    Animation animGuppyMediumEat("../res/smalleat.gif", 80, 1);
-    Animation animGuppyMediumTurn("../res/smallturn.gif", 80, 1);
-    Animation animGuppyMediumHungryMove("../res/hungryswim.gif", 80, 1);
-    Animation animGuppyMediumHungryEat("../res/hungryeat.gif", 80, 1);
-    Animation animGuppyMediumHungryTurn("../res/hungryturn.gif", 80, 1);
+    Animation animGuppyMediumMove("../res/smallswim.png", 80, 1);
+    Animation animGuppyMediumEat("../res/smalleat.png", 80, 1);
+    Animation animGuppyMediumTurn("../res/smallturn.png", 80, 1);
+    Animation animGuppyMediumHungryMove("../res/hungryswim.png", 80, 1);
+    Animation animGuppyMediumHungryEat("../res/hungryeat.png", 80, 1);
+    Animation animGuppyMediumHungryTurn("../res/hungryturn.png", 80, 1);
+    Animation animGuppyFlipMediumMove("../res/smallswimflip.png", 80, 1);
+    Animation animGuppyFlipMediumEat("../res/smalleatflip.png", 80, 1);
+    Animation animGuppyFlipMediumTurn("../res/smallturnflip.png", 80, 1);
+    Animation animGuppyFlipMediumHungryMove("../res/hungryswimflip.png", 80, 1);
+    Animation animGuppyFlipMediumHungryEat("../res/hungryeatflip.png", 80, 1);
+    Animation animGuppyFlipMediumHungryTurn("../res/hungryturnflip.png", 80, 1);
     Guppy::animList.push_back(animGuppyMediumMove);
     Guppy::animList.push_back(animGuppyMediumEat);
     Guppy::animList.push_back(animGuppyMediumTurn);
     Guppy::animList.push_back(animGuppyMediumHungryMove);
     Guppy::animList.push_back(animGuppyMediumHungryEat);
     Guppy::animList.push_back(animGuppyMediumHungryTurn);
+    Guppy::animList.push_back(animGuppyFlipMediumMove);
+    Guppy::animList.push_back(animGuppyFlipMediumEat);
+    Guppy::animList.push_back(animGuppyFlipMediumTurn);
+    Guppy::animList.push_back(animGuppyFlipMediumHungryMove);
+    Guppy::animList.push_back(animGuppyFlipMediumHungryEat);
+    Guppy::animList.push_back(animGuppyFlipMediumHungryTurn);
 
-    Animation animGuppyLargeMove("../res/smallswim.gif", 80, 2);
-    Animation animGuppyLargeEat("../res/smalleat.gif", 80, 2);
-    Animation animGuppyLargeTurn("../res/smallturn.gif", 80, 2);
-    Animation animGuppyLargeHungryMove("../res/hungryswim.gif", 80, 2);
-    Animation animGuppyLargeHungryEat("../res/hungryeat.gif", 80, 2);
-    Animation animGuppyLargeHungryTurn("../res/hungryturn.gif", 80, 2);
+    Animation animGuppyLargeMove("../res/smallswim.png", 80, 2);
+    Animation animGuppyLargeEat("../res/smalleat.png", 80, 2);
+    Animation animGuppyLargeTurn("../res/smallturn.png", 80, 2);
+    Animation animGuppyLargeHungryMove("../res/hungryswim.png", 80, 2);
+    Animation animGuppyLargeHungryEat("../res/hungryeat.png", 80, 2);
+    Animation animGuppyLargeHungryTurn("../res/hungryturn.png", 80, 2);
+    Animation animGuppyFlipLargeMove("../res/smallswimflip.png", 80, 2);
+    Animation animGuppyFlipLargeEat("../res/smalleatflip.png", 80, 2);
+    Animation animGuppyFlipLargeTurn("../res/smallturnflip.png", 80, 2);
+    Animation animGuppyFlipLargeHungryMove("../res/hungryswimflip.png", 80, 2);
+    Animation animGuppyFlipLargeHungryEat("../res/hungryeatflip.png", 80, 2);
+    Animation animGuppyFlipLargeHungryTurn("../res/hungryturnflip.png", 80, 2);
     Guppy::animList.push_back(animGuppyLargeMove);
     Guppy::animList.push_back(animGuppyLargeEat);
     Guppy::animList.push_back(animGuppyLargeTurn);
     Guppy::animList.push_back(animGuppyLargeHungryMove);
     Guppy::animList.push_back(animGuppyLargeHungryEat);
     Guppy::animList.push_back(animGuppyLargeHungryTurn);    
+    Guppy::animList.push_back(animGuppyFlipLargeMove);
+    Guppy::animList.push_back(animGuppyFlipLargeEat);
+    Guppy::animList.push_back(animGuppyFlipLargeTurn);
+    Guppy::animList.push_back(animGuppyFlipLargeHungryMove);
+    Guppy::animList.push_back(animGuppyFlipLargeHungryEat);
+    Guppy::animList.push_back(animGuppyFlipLargeHungryTurn);  
 
-    Animation animGuppyKingMove("../res/smallswim.gif", 80, 3);
-    Animation animGuppyKingEat("../res/smalleat.gif", 80, 3);
-    Animation animGuppyKingTurn("../res/smallturn.gif", 80, 3);
-    Animation animGuppyKingHungryMove("../res/hungryswim.gif", 80, 3);
-    Animation animGuppyKingHungryEat("../res/hungryeat.gif", 80, 3);
-    Animation animGuppyKingHungryTurn("../res/hungryturn.gif", 80, 3);
+    Animation animGuppyKingMove("../res/smallswim.png", 80, 3);
+    Animation animGuppyKingEat("../res/smalleat.png", 80, 3);
+    Animation animGuppyKingTurn("../res/smallturn.png", 80, 3);
+    Animation animGuppyKingHungryMove("../res/hungryswimflip.png", 80, 3);
+    Animation animGuppyKingHungryEat("../res/hungryeatflip.png", 80, 3);
+    Animation animGuppyKingHungryTurn("../res/hungryturnflip.png", 80, 3);
+    Animation animGuppyFlipKingMove("../res/smallswimflip.png", 80, 3);
+    Animation animGuppyFlipKingEat("../res/smalleatflip.png", 80, 3);
+    Animation animGuppyFlipKingTurn("../res/smallturnflip.png", 80, 3);
+    Animation animGuppyFlipKingHungryMove("../res/hungryswimflip.png", 80, 3);
+    Animation animGuppyFlipKingHungryEat("../res/hungryeatflip.png", 80, 3);
+    Animation animGuppyFlipKingHungryTurn("../res/hungryturnflip.png", 80, 3);
     Guppy::animList.push_back(animGuppyKingMove);
     Guppy::animList.push_back(animGuppyKingEat);
     Guppy::animList.push_back(animGuppyKingTurn);
     Guppy::animList.push_back(animGuppyKingHungryMove);
     Guppy::animList.push_back(animGuppyKingHungryEat);
     Guppy::animList.push_back(animGuppyKingHungryTurn);   
+    Guppy::animList.push_back(animGuppyFlipKingMove);
+    Guppy::animList.push_back(animGuppyFlipKingEat);
+    Guppy::animList.push_back(animGuppyFlipKingTurn);
+    Guppy::animList.push_back(animGuppyFlipKingHungryMove);
+    Guppy::animList.push_back(animGuppyFlipKingHungryEat);
+    Guppy::animList.push_back(animGuppyFlipKingHungryTurn);   
 
-    Animation animPiranhaMove("../res/smallswim.gif", 80, 4);
-    Animation animPiranhaEat("../res/smalleat.gif", 80, 4);
-    Animation animPiranhaTurn("../res/smallturn.gif", 80, 4);
-    Animation animPiranhaHungryMove("../res/hungryswim.gif", 80, 4);
-    Animation animPiranhaHungryEat("../res/hungryeat.gif", 80, 4);
-    Animation animPiranhaHungryTurn("../res/hungryturn.gif", 80, 4);
+    Animation animGuppySmallDie("../res/smalldie.png", 80, 0);
+    Animation animGuppyFlipSmallDie("../res/smalldieflip.png", 80, 0);
+    Animation animGuppyMediumDie("../res/smalldie.png", 80, 1);
+    Animation animGuppyFlipMediumDie("../res/smalldieflip.png", 80, 1);
+    Animation animGuppyLargeDie("../res/smalldie.png", 80, 2);
+    Animation animGuppyFlipLargeDie("../res/smalldieflip.png", 80, 2);
+    Animation animGuppyKingDie("../res/smalldie.png", 80, 3);
+    Animation animGuppyFlipKingDie("../res/smalldieflip.png", 80, 3);
+    Guppy::animList.push_back(animGuppySmallDie);
+    Guppy::animList.push_back(animGuppyFlipSmallDie);
+    Guppy::animList.push_back(animGuppyMediumDie);
+    Guppy::animList.push_back(animGuppyFlipMediumDie);
+    Guppy::animList.push_back(animGuppyLargeDie);
+    Guppy::animList.push_back(animGuppyFlipLargeDie);
+    Guppy::animList.push_back(animGuppyKingDie);
+    Guppy::animList.push_back(animGuppyFlipKingDie);
+
+    Animation animPiranhaMove("../res/smallswim.png", 80, 4);
+    Animation animPiranhaEat("../res/smalleat.png", 80, 4);
+    Animation animPiranhaTurn("../res/smallturn.png", 80, 4);
+    Animation animPiranhaHungryMove("../res/hungryswim.png", 80, 4);
+    Animation animPiranhaHungryEat("../res/hungryeat.png", 80, 4);
+    Animation animPiranhaHungryTurn("../res/hungryturn.png", 80, 4);
+    Animation animPiranhaFlipMove("../res/smallswimflip.png", 80, 4);
+    Animation animPiranhaFlipEat("../res/smalleatflip.png", 80, 4);
+    Animation animPiranhaFlipTurn("../res/smallturnflip.png", 80, 4);
+    Animation animPiranhaFlipHungryMove("../res/hungryswimflip.png", 80, 4);
+    Animation animPiranhaFlipHungryEat("../res/hungryeatflip.png", 80, 4);
+    Animation animPiranhaFlipHungryTurn("../res/hungryturnflip.png", 80, 4);
     Piranha::animList.push_back(animPiranhaMove);
     Piranha::animList.push_back(animPiranhaEat);
     Piranha::animList.push_back(animPiranhaTurn);
     Piranha::animList.push_back(animPiranhaHungryMove);
     Piranha::animList.push_back(animPiranhaHungryEat);
     Piranha::animList.push_back(animPiranhaHungryTurn);
+    Piranha::animList.push_back(animPiranhaFlipMove);
+    Piranha::animList.push_back(animPiranhaFlipEat);
+    Piranha::animList.push_back(animPiranhaFlipTurn);
+    Piranha::animList.push_back(animPiranhaFlipHungryMove);
+    Piranha::animList.push_back(animPiranhaFlipHungryEat);
+    Piranha::animList.push_back(animPiranhaFlipHungryTurn);
 
-    Animation animSnailMove("../res/stinky.gif", 80, 0);
-    Animation animSnailIdle("../res/stinky.gif", 80, 2);
-    Animation animSnailTurn("../res/stinky.gif", 80, 1);
+    Animation animPiranhaDie("../res/smalldie.png", 80, 4);
+    Animation animPiranhaFlipDie("../res/smalldieflip.png", 80, 4);
+    Piranha::animList.push_back(animPiranhaDie);
+    Piranha::animList.push_back(animPiranhaFlipDie);
+
+    Animation animSnailMove("../res/stinky.png", 80, 0);
+    Animation animSnailIdle("../res/stinky.png", 80, 2);
+    Animation animSnailTurn("../res/stinky.png", 80, 1);
+    Animation animSnailFlipMove("../res/stinkyflip.png", 80, 0);
+    Animation animSnailFlipIdle("../res/stinkyflip.png", 80, 2);
+    Animation animSnailFlipTurn("../res/stinkyflip.png", 80, 1);
     NormalSnail::animList.push_back(animSnailMove);
     NormalSnail::animList.push_back(animSnailIdle);
     NormalSnail::animList.push_back(animSnailTurn);
+    NormalSnail::animList.push_back(animSnailFlipMove);
+    NormalSnail::animList.push_back(animSnailFlipIdle);
+    NormalSnail::animList.push_back(animSnailFlipTurn);
+
+    Animation animFoodMove("../res/food.png", 40, 2);
+    NormalFood::animList.push_back(animFoodMove);
+
+    NormalFood::speed = 30;
+
+    Animation animCoinMove("../res/money.png", 72, 0);
+    SilverCoin::animList.push_back(animCoinMove);
 
     Guppy::foodForUpgrade = 5;
+    Guppy::timeForCoin = 5;
     Guppy::speed = 50;
     Piranha::speed = 60;
 
     Fish::timeUntilHungry = 5;
     Fish::timeUntilDead = 10;
+
+    SilverCoin::speed = 30;
+    NormalSnail::speed = 30;
 
     framesPassed = 0;
     fpcStart = timeSinceStart();
@@ -137,6 +237,14 @@ void Game::updateObjects() {
         Snail * snail = aquarium.snails[i];
         snail->update(now, secSinceLast);
     }        
+    for (int i = 0; i < aquarium.coins.length(); i++) {
+        Coin * coin = aquarium.coins[i];
+        coin->update(now, secSinceLast);
+    }
+    for (int i = 0; i < aquarium.foods.length(); i++) {
+        Food * food = aquarium.foods[i];
+        food->update(now, secSinceLast);
+    }
 }
 
 SDL_Surface* Game::loadSurface( std::string path )
@@ -182,7 +290,6 @@ void Game::drawText(std::string text, int font_size, int x, int y, unsigned char
 }
 
 void Game::drawObjects() {
-    printf("%d\n", aquarium.objects.length());
     for (int i = 0; i < aquarium.fishes.length(); i++) {
         Fish * fish = aquarium.fishes[i];
         Position pos = fish->getPosition();
@@ -192,9 +299,21 @@ void Game::drawObjects() {
     for (int i = 0; i < aquarium.snails.length(); i++) {
         Snail * snail = aquarium.snails[i];
         Position pos = snail->getPosition();
-        Animation anim = snail->getAnim(snail->animMode);
-        drawFrame(anim.getSprite(), pos.x, pos.y, anim.get(snail->animFrame));
+        Animation anim = snail->getAnim(snail->getAnimMode());
+        drawFrame(anim.getSprite(), pos.x, pos.y, anim.get(snail->getAnimFrame()));
     } 
+    for (int i = 0; i < aquarium.coins.length(); i++) {
+        Coin * coin = aquarium.coins[i];
+        Position pos = coin->getPosition();
+        Animation anim = coin->getAnim(coin->getAnimMode());
+        drawFrame(anim.getSprite(), pos.x, pos.y, anim.get(coin->getAnimFrame()));
+    }
+    for (int i = 0; i < aquarium.foods.length(); i++) {
+        Food * food = aquarium.foods[i];
+        Position pos = food->getPosition();
+        Animation anim = food->getAnim(food->getAnimMode());
+        drawFrame(anim.getSprite(), pos.x, pos.y, anim.get(food->getAnimFrame()));
+    }
 }
 
 void Game::drawFrame(const std::string &filename, int x, int y, SDL_Rect* frame) {
@@ -235,18 +354,28 @@ void Game::handleInput() {
                 aquarium.fishes.add(piranha);     
                 printf("Piranha spawned\n");           
             }
+            else if (e.key.keysym.sym == SDLK_c) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                SilverCoin * coin = new SilverCoin(x, y, aquarium, now);
+                aquarium.coins.add(coin);
+            }
+            else if (e.key.keysym.sym == SDLK_g) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                Guppy * guppy = new Guppy(x, y, aquarium, now);
+                aquarium.fishes.add(guppy);
+            }
         }
         else if (e.type == SDL_KEYUP) {
             pressedKeys.erase(e.key.keysym.sym);
         }
         else if (e.type == SDL_MOUSEBUTTONDOWN) {
             if (e.button.button == SDL_BUTTON_LEFT) {
-                printf("Check linked list\n");
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                Guppy * guppy = new Guppy(x, y, aquarium, now);
-                aquarium.fishes.add(guppy);
-                printf("Fish added\n");
+                NormalFood * food = new NormalFood(x, y, aquarium, now);
+                aquarium.foods.add(food);
             }
         }
     }

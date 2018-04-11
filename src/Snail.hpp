@@ -5,11 +5,15 @@
 #include "Animation.hpp"
 
 class Snail {
+protected:
+    virtual Coin * findNearestCoin() = 0;
+    virtual void move(double secSinceLast) = 0;
 public:
-    int animMode, animFrame;
     virtual Position getPosition() = 0;
     virtual void update(double now, double secSinceLast) = 0;
     virtual Animation getAnim(int index) = 0;
+    virtual int getAnimFrame() = 0;
+    virtual int getAnimMode() = 0;
 };
 
 #endif

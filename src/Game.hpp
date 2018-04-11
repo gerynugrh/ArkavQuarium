@@ -5,6 +5,8 @@
 #include "Guppy.hpp"
 #include "NormalSnail.hpp"
 #include "Piranha.hpp"
+#include "SilverCoin.hpp"
+#include "NormalFood.hpp"
 #include <chrono>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

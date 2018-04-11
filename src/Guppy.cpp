@@ -8,7 +8,11 @@ Guppy::Guppy(const int & x, const int & y, Aquarium & aquarium, double now) : Aq
     amountOfFood = 0;
     Fish::animFrame = 0;
     Fish::animMode = 0;
+    stage = 0;
+    Fish::timeStamp = now;
     AquariumObject::timeSpawned = now;
+    hungry = false;
+    right = false;
 }
 
 int Guppy::getStage() const {
@@ -19,19 +23,85 @@ Position Guppy::getPosition() const {
     return AquariumObject::position;
 }
 
-bool Guppy::eat(Food * food) {
-    aquarium.foods.remove(food);
-    amountOfFood++;
+bool Guppy::eat(double now) {
+    Food * food = findNearestFood();
+    if (hungry && food != NULL && position.distanceFrom(food->getPosition()) <= 20) {
+        printf("Closing in to eat\n");
+        aquarium.foods.remove(food);
+        amountOfFood++;
+        return true;
+    } else if (hungry && food != NULL && position.distanceFrom(food->getPosition()) <= 60) {
+        Fish::animMode = 1 + 3 * Fish::hungry + 6 * right + 12 * stage;
+        Fish::timeStamp = now;
+    }
+    return false;
 }
 
 void Guppy::update(double now, double secSinceLast) {
-    printf("%lf\n", AquariumObject::timeSpawned);
-    Fish::animFrame = (fmod((now - AquariumObject::timeSpawned) * 50, 60)) / 6;
-    move(secSinceLast);
+    if (Fish::alive) {
+        if (Fish::animMode % 3 == 1 && Fish::animFrame == 9) {
+            Fish::animMode = 0 + 3 * hungry + 6 * right + 12 * stage; 
+            Fish::animFrame = 0;
+            Fish::timeStamp = now;
+        }
+        else if (right && (Fish::animMode % 6) % 3 == 2 && Fish::animFrame == 9) {
+            Fish::animMode = 0 + 3 * hungry + 6 * right + 12 * stage;
+            Fish::animFrame = 0;
+            Fish::timeStamp = now;
+        }
+        else if (!right && (Fish::animMode % 6) % 3 == 2) {
+            Fish::animFrame = 9 - (fmod((now - Fish::timeStamp) * 50, 60)) / 6; 
+
+            if (Fish::animFrame == 0) {
+                Fish::animMode = 0 + 3 * hungry + 6 * right + 12 * stage;
+                Fish::animFrame = 0;
+                Fish::timeStamp = now;            
+            }
+        }
+        else {
+            printf("Frame: %d\n", Fish::animFrame);
+            Fish::animFrame = (fmod((now - Fish::timeStamp) * 50, 60)) / 6;
+        }
+        move(secSinceLast);
+        if (eat(now)) {
+            Fish::timeEat = now;
+            Fish::hungry = false;
+            Fish::animMode = animMode % 3 + 3 * hungry + 6 * right + 12 * stage;
+            produceCoin(now);
+        }
+        if (hungry && now - timeHungry >= timeUntilDead) {
+            Fish::alive = false;
+        }
+        else if (!hungry && now - timeEat >= timeUntilHungry) {
+            Fish::timeHungry = now;
+            Fish::hungry = true;
+            Fish::animMode = animMode % 3 + 3 * hungry + 6 * right + 12 * stage;
+        }
+        if (!right && (direction <= 90 || direction >= 270)) {
+            Fish::animMode = 2 + 3 * hungry + 6 * right + 12 * stage;
+            if (right) {
+                Fish::animFrame = 9;
+            }
+            Fish::timeStamp = now;
+            right = true;
+        }
+        else if (right && (direction >= 90 && direction <= 270)) {
+            Fish::animMode = 2 + 3 * hungry + 6 * right + 12 * stage;
+            if (right) {
+                Fish::animFrame = 9;
+            }
+            Fish::timeStamp = now;
+            right = false;
+        }
+        upgrade();
+    }
 }
 
-Coin * Guppy::produceCoin() {
-
+void Guppy::produceCoin(double now) {
+    if (((int) now -  (int) timeSpawned) % Guppy::timeForCoin == 4) {
+        SilverCoin * coin = new SilverCoin(position.x, position.y, aquarium, now);
+        aquarium.coins.add(coin);        
+    }
 }
 
 void Guppy::upgrade() {
@@ -56,7 +126,7 @@ Food * Guppy::findNearestFood() {
 
 void Guppy::move(double secSinceLast) {
     if (moveDuration < 0) {
-        std::uniform_real_distribution<double> durDistribution(0.5, 5);
+        std::uniform_real_distribution<double> durDistribution(1, 5);
         moveDuration = durDistribution(generator);
         std::uniform_real_distribution<double> distribution(0, 360);
         direction = distribution(generator);        
@@ -64,17 +134,15 @@ void Guppy::move(double secSinceLast) {
     else {
         moveDuration -= secSinceLast;
     }
-    if (findNearestFood() != NULL) {
+    if (hungry && findNearestFood() != NULL) {
         Food * nearestFood = findNearestFood();
         int deltaX, deltaY;
         deltaX = nearestFood->getPosition().x - position.x;
         deltaY = nearestFood->getPosition().y - position.y;
         // TODO calculate the degree to point into direction of food   
-        direction = atan2(deltaY, deltaX) * 180 / (2 * PI);
+        direction = atan2(deltaY, deltaX) * 180 / (PI);
     } 
     else {
-        printf("Degree: %lf\n", cos(direction * PI / 180.0) * secSinceLast * speed);
-
         double newX, newY;
         newX = position.x + cos(direction * PI / 180.0) * secSinceLast * speed;
         newY = position.y + sin(direction * PI / 180.0) * secSinceLast * speed;
@@ -95,10 +163,9 @@ void Guppy::move(double secSinceLast) {
             std::uniform_real_distribution<double> distribution(0, 180);
             direction = 180 + distribution(generator);               
         }
-        
-        position.x += cos(direction * PI / 180.0) * secSinceLast * speed;
-        position.y += sin(direction * PI / 180.0) * secSinceLast * speed;
     }
+    position.x += cos(direction * PI / 180.0) * secSinceLast * speed;
+    position.y += sin(direction * PI / 180.0) * secSinceLast * speed;
 }
 
 Animation Guppy::getAnim(int index) {

@@ -7,15 +7,17 @@
 #include "LinkedList.hpp"
 #include "Fish.hpp"
 #include "Coin.hpp"
+#include "SilverCoin.hpp"
 #include <vector>
 #include "Animation.hpp"
 
 class Guppy : public AquariumObject, public Fish {
 private:
     int amountOfFood;
+    bool right;
 protected:
-    bool eat(Food * food);
-    Coin* produceCoin();
+    bool eat(double now);
+    void produceCoin(double now);
     void upgrade();
     Food* findNearestFood();
     void move(double secSinceLast);
