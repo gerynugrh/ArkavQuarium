@@ -1,5 +1,11 @@
 # ArkavQuarium
 
+ArkavQuarium is an implementation of InsaniQuarium using C++. It includes code to handle sprite changes to generate animation.
+
+## How to Run
+
+`make all`
+
 ## Game
 Main controller, has update function that will call each Aquarium object's update function.
 | Function          | Description                           |
